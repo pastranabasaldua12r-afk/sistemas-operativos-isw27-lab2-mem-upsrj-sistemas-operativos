@@ -327,3 +327,5 @@ Esta práctica busca que el estudiante:
 * Documente técnicamente su análisis de forma reproducible
 
 El script debe entenderse como una herramienta de diagnóstico del sistema operativo.
+
+Verificación de entrega
