@@ -1,6 +1,7 @@
 #!/bin/bash
 ###############################################################################
 # File: mem_analysis.sh
+# Author (GitHub): pastranabasaldua12r-afk
 # Subject: Operating Systems
 # Topic: Memory Management Analysis in Linux (Ubuntu 22.04)
 #
@@ -28,11 +29,7 @@ mkdir -p "${OUT_DIR}"
 # Student identification
 ###############################################################################
 
-# TODO:
-# Define your GitHub username in the variable below.
-# This value will be used to identify the author of this analysis.
-
-GITHUB_USER="TODO_GITHUB_USERNAME"
+GITHUB_USER="pastranabasaldua12r-afk"
 
 ###############################################################################
 echo "================ MEMORY MANAGEMENT ANALYSIS =================" >> "${LOG_FILE}"
@@ -47,34 +44,15 @@ echo "" >> "${LOG_FILE}"
 ###############################################################################
 echo "=== SECTION 1: GENERAL MEMORY STATUS ===" >> "${LOG_FILE}"
 
-# TODO:
-# Execute a command that displays:
-# - Total physical memory (RAM)
-# - Used memory
-# - Available memory
-# - Swap usage
-# The output must be written to the log file.
-
-# NOTE:
-# - This information is typically obtained using a standard Linux memory
-#   reporting utility.
-# - Human-readable output is strongly recommended.
-#
-# Useful references:
-# - man free
-# - https://man7.org/linux/man-pages/man1/free.1.html
-#
-# Helpful flags:
-# - -h : display values in human-readable format (MB/GB)
-
-# TODO: Write the appropriate command here
-# >> "${LOG_FILE}"
+free -h >> "${LOG_FILE}"
 
 echo "" >> "${LOG_FILE}"
 echo "ANALYSIS:" >> "${LOG_FILE}"
-# TODO: Describe the total RAM installed in the system.
-# TODO: Explain the difference between used, free, and available memory.
-# TODO: Explain why swap memory may be in use even if free RAM exists.
+echo "The system RAM information is displayed above." >> "${LOG_FILE}"
+echo "Used memory represents memory currently allocated to running processes." >> "${LOG_FILE}"
+echo "Free memory is completely unused RAM." >> "${LOG_FILE}"
+echo "Available memory includes reclaimable cache and buffers." >> "${LOG_FILE}"
+echo "Swap may be used even if free RAM exists due to kernel memory optimization." >> "${LOG_FILE}"
 echo "" >> "${LOG_FILE}"
 
 ###############################################################################
@@ -82,34 +60,14 @@ echo "" >> "${LOG_FILE}"
 ###############################################################################
 echo "=== SECTION 2: MEMORY STATUS OVER TIME ===" >> "${LOG_FILE}"
 
-# TODO:
-# Execute a command that reports virtual memory statistics periodically.
-# The command must show paging activity and memory behavior over time.
-
-# NOTE:
-# - This command is used to monitor virtual memory, processes, and swap activity.
-# - It can show swap-in and swap-out operations.
-#
-# Useful references:
-# - man vmstat
-# - https://man7.org/linux/man-pages/man8/vmstat.8.html
-#
-# Helpful flags:
-# - delay : time between updates (in seconds)
-# - count : number of reports to display
-#
-# Relevant fields:
-# - si : swap in
-# - so : swap out
-
-# TODO: Write the appropriate command here
-# >> "${LOG_FILE}"
+vmstat 1 5 >> "${LOG_FILE}"
 
 echo "" >> "${LOG_FILE}"
 echo "ANALYSIS:" >> "${LOG_FILE}"
-# TODO: Explain the meaning of swap-in and swap-out.
-# TODO: Indicate whether paging activity was observed.
-# TODO: Describe the impact of excessive paging on performance.
+echo "Swap-in (si) indicates data moved from disk to RAM." >> "${LOG_FILE}"
+echo "Swap-out (so) indicates data moved from RAM to disk." >> "${LOG_FILE}"
+echo "If si and so values are zero, no active paging is occurring." >> "${LOG_FILE}"
+echo "Excessive paging reduces performance due to heavy disk usage." >> "${LOG_FILE}"
 echo "" >> "${LOG_FILE}"
 
 ###############################################################################
@@ -117,34 +75,14 @@ echo "" >> "${LOG_FILE}"
 ###############################################################################
 echo "=== SECTION 3: KERNEL MEMORY INFORMATION ===" >> "${LOG_FILE}"
 
-# TODO:
-# Retrieve detailed memory information directly from the kernel.
-
-# NOTE:
-# - The Linux kernel exposes memory statistics through a virtual filesystem.
-# - This data reflects real-time kernel memory management.
-#
-# Useful references:
-# - https://docs.kernel.org/filesystems/proc.html
-# - man proc
-#
-# Important fields to observe:
-# - MemTotal
-# - MemFree
-# - MemAvailable
-# - Buffers
-# - Cached
-# - SwapTotal
-# - SwapFree
-
-# TODO: Write the appropriate command here
-# >> "${LOG_FILE}"
+cat /proc/meminfo >> "${LOG_FILE}"
 
 echo "" >> "${LOG_FILE}"
 echo "ANALYSIS:" >> "${LOG_FILE}"
-# TODO: Explain the difference between MemFree and MemAvailable.
-# TODO: Describe the purpose of buffers and cache.
-# TODO: Explain why Linux aggressively uses memory for caching.
+echo "MemFree shows completely unused memory." >> "${LOG_FILE}"
+echo "MemAvailable estimates memory available for new processes." >> "${LOG_FILE}"
+echo "Buffers and Cached memory improve disk performance." >> "${LOG_FILE}"
+echo "Linux uses memory aggressively for caching to optimize speed." >> "${LOG_FILE}"
 echo "" >> "${LOG_FILE}"
 
 ###############################################################################
@@ -152,30 +90,13 @@ echo "" >> "${LOG_FILE}"
 ###############################################################################
 echo "=== SECTION 4: MEMORY USAGE BY PROCESSES ===" >> "${LOG_FILE}"
 
-# TODO:
-# List running processes sorted by memory usage in descending order.
-# Limit the output to the top memory-consuming processes.
-
-# NOTE:
-# - This command lists all running processes along with resource usage.
-#
-# Useful references:
-# - man ps
-# - https://man7.org/linux/man-pages/man1/ps.1.html
-#
-# Helpful flags:
-# - aux : show processes for all users with detailed format
-# - --sort=-%mem : sort by memory usage (descending)
-# - head : limit output size
-
-# TODO: Write the appropriate command here
-# >> "${LOG_FILE}"
+ps aux --sort=-%mem | head -n 10 >> "${LOG_FILE}"
 
 echo "" >> "${LOG_FILE}"
 echo "ANALYSIS:" >> "${LOG_FILE}"
-# TODO: Identify the process consuming the most memory.
-# TODO: Classify it as a system or user process.
-# TODO: Explain the risks of uncontrolled memory usage.
+echo "The top process listed is the highest memory consumer." >> "${LOG_FILE}"
+echo "It may be a system or user process depending on ownership." >> "${LOG_FILE}"
+echo "Uncontrolled memory usage can cause instability or thrashing." >> "${LOG_FILE}"
 echo "" >> "${LOG_FILE}"
 
 ###############################################################################
@@ -183,65 +104,33 @@ echo "" >> "${LOG_FILE}"
 ###############################################################################
 echo "=== SECTION 5: SWAP MEMORY ANALYSIS ===" >> "${LOG_FILE}"
 
-# TODO:
-# Display currently active swap devices and their usage.
-
-# NOTE:
-# - Swap devices are used as an extension of physical memory.
-#
-# Useful references:
-# - man swapon
-# - https://man7.org/linux/man-pages/man8/swapon.8.html
-#
-# Helpful flags:
-# - --show : display active swap areas
-
-# TODO: Write the appropriate command here
-# >> "${LOG_FILE}"
-
-# TODO:
-# Retrieve detailed swap information from the kernel.
-
-# NOTE:
-# - Swap details are exposed via the /proc virtual filesystem.
-#
-# Useful references:
-# - https://docs.kernel.org/filesystems/proc.html
-
-# TODO: Write the appropriate command here
-# >> "${LOG_FILE}"
+swapon --show >> "${LOG_FILE}"
+cat /proc/swaps >> "${LOG_FILE}"
+grep SwapTotal /proc/meminfo >> "${LOG_FILE}"
+grep SwapFree /proc/meminfo >> "${LOG_FILE}"
 
 echo "" >> "${LOG_FILE}"
 echo "ANALYSIS:" >> "${LOG_FILE}"
-# TODO: Indicate whether swap is enabled.
-# TODO: State the total swap size.
-# TODO: Explain the role of swap in virtual memory systems.
+echo "If swap devices are listed above, swap is enabled." >> "${LOG_FILE}"
+echo "SwapTotal indicates total configured swap space." >> "${LOG_FILE}"
+echo "SwapFree shows how much swap space is currently unused." >> "${LOG_FILE}"
+echo "Swap extends physical memory and prevents out-of-memory errors." >> "${LOG_FILE}"
 echo "" >> "${LOG_FILE}"
+
+
 
 ###############################################################################
 # SECTION 6: Swappiness Parameter
 ###############################################################################
 echo "=== SECTION 6: SWAPPINESS PARAMETER ===" >> "${LOG_FILE}"
 
-# TODO:
-# Read the kernel parameter that controls swap aggressiveness.
-
-# NOTE:
-# - Swappiness controls how often the kernel prefers swap over RAM.
-# - Values range from 0 (avoid swap) to 100 (prefer swap).
-#
-# Useful references:
-# - https://docs.kernel.org/admin-guide/sysctl/vm.html
-# - man sysctl
-
-# TODO: Write the appropriate command here
-# >> "${LOG_FILE}"
+cat /proc/sys/vm/swappiness >> "${LOG_FILE}"
 
 echo "" >> "${LOG_FILE}"
 echo "ANALYSIS:" >> "${LOG_FILE}"
-# TODO: Interpret the swappiness value.
-# TODO: Describe system behavior with high swappiness.
-# TODO: Describe system behavior with low swappiness.
+echo "Swappiness controls how aggressively the kernel uses swap." >> "${LOG_FILE}"
+echo "High swappiness values increase swap usage." >> "${LOG_FILE}"
+echo "Low swappiness values prioritize keeping processes in RAM." >> "${LOG_FILE}"
 echo "" >> "${LOG_FILE}"
 
 ###############################################################################
@@ -249,11 +138,11 @@ echo "" >> "${LOG_FILE}"
 ###############################################################################
 echo "=== SECTION 7: THEORETICAL RELATION ===" >> "${LOG_FILE}"
 
-# TODO: Relate physical memory to frames.
-# TODO: Relate virtual memory to pages.
-# TODO: Explain the role of the MMU.
-# TODO: Explain paging and swap interaction.
-# TODO: Describe what thrashing is and how it could be detected.
+echo "Physical memory is divided into frames." >> "${LOG_FILE}"
+echo "Virtual memory is divided into pages." >> "${LOG_FILE}"
+echo "The MMU translates virtual addresses into physical addresses." >> "${LOG_FILE}"
+echo "Paging allows movement of pages between RAM and swap." >> "${LOG_FILE}"
+echo "Thrashing occurs when excessive paging degrades performance." >> "${LOG_FILE}"
 echo "" >> "${LOG_FILE}"
 
 ###############################################################################
@@ -261,10 +150,12 @@ echo "" >> "${LOG_FILE}"
 ###############################################################################
 echo "=== CONCLUSIONS ===" >> "${LOG_FILE}"
 
-# TODO: Answer whether Linux wastes memory.
-# TODO: Explain why low free memory is not necessarily a problem.
-# TODO: Summarize key lessons learned about memory management.
+echo "Linux manages RAM efficiently using cache and buffers." >> "${LOG_FILE}"
+echo "Low free RAM is not necessarily a problem because cached memory can be reused." >> "${LOG_FILE}"
+echo "Swap complements RAM when physical memory becomes limited." >> "${LOG_FILE}"
+echo "Paging is a memory management technique that moves pages between RAM and swap." >> "${LOG_FILE}"
+echo "Excessive paging can reduce performance if the system enters thrashing." >> "${LOG_FILE}"
+echo "Efficient memory management improves system stability and performance." >> "${LOG_FILE}"
 echo "" >> "${LOG_FILE}"
+echo "The paging mechanism helps optimize memory usage." >> "${LOG_FILE}"
 
-###############################################################################
-echo "================ END OF ANALYSIS =================" >> "${LOG_FILE}"
